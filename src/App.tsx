@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { FirebaseSetupError } from '@/components/FirebaseSetupError';
+import { isFirebaseConfigured } from '@/lib/firebaseConfig';
 import { Layout } from '@/components/Layout';
 import { Login } from '@/pages/Login';
 import { Dashboard } from '@/pages/Dashboard';
@@ -57,6 +59,10 @@ function LoginRoute() {
 }
 
 export default function App() {
+  if (!isFirebaseConfigured()) {
+    return <FirebaseSetupError />;
+  }
+
   return (
     <BrowserRouter>
       <AuthProvider>

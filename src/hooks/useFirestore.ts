@@ -10,13 +10,19 @@ import {
   deleteDoc,
   doc,
   type DocumentData,
+  type Firestore,
 } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { useAuth } from '@/context/AuthContext';
 import type { Project, Task, Note } from '@/types';
 
+function getDb(): Firestore {
+  if (!db) throw new Error('Firebase não configurado');
+  return db;
+}
+
 function userCollection(userId: string, name: string) {
-  return collection(db, 'users', userId, name);
+  return collection(getDb(), 'users', userId, name);
 }
 
 function mapDoc<T>(id: string, data: DocumentData): T {
@@ -54,12 +60,12 @@ export function useProjects() {
 
   const updateProject = async (id: string, data: Partial<Project>) => {
     if (!user) return;
-    await updateDoc(doc(db, 'users', user.uid, 'projects', id), { ...data, updatedAt: Date.now() });
+    await updateDoc(doc(getDb(), 'users', user.uid, 'projects', id), { ...data, updatedAt: Date.now() });
   };
 
   const deleteProject = async (id: string) => {
     if (!user) return;
-    await deleteDoc(doc(db, 'users', user.uid, 'projects', id));
+    await deleteDoc(doc(getDb(), 'users', user.uid, 'projects', id));
   };
 
   return { projects, loading, addProject, updateProject, deleteProject };
@@ -97,12 +103,12 @@ export function useTasks(projectId?: string) {
 
   const updateTask = async (id: string, data: Partial<Task>) => {
     if (!user) return;
-    await updateDoc(doc(db, 'users', user.uid, 'tasks', id), { ...data, updatedAt: Date.now() });
+    await updateDoc(doc(getDb(), 'users', user.uid, 'tasks', id), { ...data, updatedAt: Date.now() });
   };
 
   const deleteTask = async (id: string) => {
     if (!user) return;
-    await deleteDoc(doc(db, 'users', user.uid, 'tasks', id));
+    await deleteDoc(doc(getDb(), 'users', user.uid, 'tasks', id));
   };
 
   return { tasks, loading, addTask, updateTask, deleteTask };
@@ -139,12 +145,12 @@ export function useNotes() {
 
   const updateNote = async (id: string, data: Partial<Note>) => {
     if (!user) return;
-    await updateDoc(doc(db, 'users', user.uid, 'notes', id), { ...data, updatedAt: Date.now() });
+    await updateDoc(doc(getDb(), 'users', user.uid, 'notes', id), { ...data, updatedAt: Date.now() });
   };
 
   const deleteNote = async (id: string) => {
     if (!user) return;
-    await deleteDoc(doc(db, 'users', user.uid, 'notes', id));
+    await deleteDoc(doc(getDb(), 'users', user.uid, 'notes', id));
   };
 
   return { notes, loading, addNote, updateNote, deleteNote };
