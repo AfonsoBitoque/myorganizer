@@ -16,17 +16,19 @@ PWA pessoal para organização do mestrado em Engenharia Informática — combin
 1. Cria um projeto em [Firebase Console](https://console.firebase.google.com)
 2. Ativa **Authentication** → Email/Password
 3. Cria uma base de dados **Firestore** (modo produção)
-4. Deploy das regras de segurança:
+4. **Regista uma app Web** (ícone `</>`) → copia as credenciais
+5. Deploy das regras de segurança (só uma vez):
    ```bash
    npx firebase-tools login
-   npx firebase-tools use --add
+   npx firebase-tools use --add    # escolhe o teu projeto
    npx firebase-tools deploy --only firestore:rules,firestore:indexes
    ```
-5. Regista uma app Web e copia as credenciais para `.env`:
+6. Cria o ficheiro `.env` local:
    ```bash
    cp .env.example .env
-   # Edita .env com as tuas credenciais Firebase
+   # Cola as credenciais da app Web Firebase
    ```
+7. Em **Authentication → Settings → Authorized domains**, adiciona o domínio da Vercel (ex: `myorganizer.vercel.app`)
 
 ## Desenvolvimento local
 
@@ -38,16 +40,24 @@ npm run dev
 
 Abre http://localhost:5173
 
-## Deploy (Firebase Hosting)
+## Deploy (Vercel)
 
-```bash
-npm run build
-npx firebase-tools deploy --only hosting
-```
+1. Faz push do repo para o GitHub
+2. Vai a [vercel.com](https://vercel.com) → **Add New Project** → importa o repo
+3. A Vercel deteta Vite automaticamente (Build: `npm run build`, Output: `dist`)
+4. Em **Environment Variables**, adiciona as 6 variáveis do `.env.example`:
+   - `VITE_FIREBASE_API_KEY`
+   - `VITE_FIREBASE_AUTH_DOMAIN`
+   - `VITE_FIREBASE_PROJECT_ID`
+   - `VITE_FIREBASE_STORAGE_BUCKET`
+   - `VITE_FIREBASE_MESSAGING_SENDER_ID`
+   - `VITE_FIREBASE_APP_ID`
+5. Clica **Deploy**
+6. Depois do deploy, copia o URL (ex: `https://myorganizer.vercel.app`) e adiciona-o em **Firebase → Authentication → Authorized domains**
 
 ## Instalar no iPhone
 
-1. Abre a app no Safari (URL do Firebase Hosting ou localhost em dev)
+1. Abre a app no Safari (URL da Vercel ou localhost em dev)
 2. Toca no botão **Partilhar** (ícone de quadrado com seta)
 3. Seleciona **Adicionar ao Ecrã Principal**
 4. A app aparece como ícone no teu iPhone, sem App Store
