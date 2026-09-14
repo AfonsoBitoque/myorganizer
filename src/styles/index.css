@@ -11,8 +11,12 @@
   --warning: #f59e0b;
   --danger: #ef4444;
   --radius: 12px;
+  --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
   --nav-height: 64px;
+  --page-padding: 16px;
 }
 
 * {
@@ -21,8 +25,14 @@
   padding: 0;
 }
 
+html {
+  height: -webkit-fill-available;
+}
+
 html, body, #root {
-  height: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
 }
 
 body {
@@ -118,8 +128,13 @@ textarea {
 
 .page {
   min-height: 100%;
-  padding: 16px;
-  padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + 16px);
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  padding:
+    calc(var(--safe-top) + var(--page-padding))
+    calc(var(--safe-right) + var(--page-padding))
+    calc(var(--nav-height) + var(--safe-bottom) + var(--page-padding))
+    calc(var(--safe-left) + var(--page-padding));
 }
 
 .page-header {
@@ -194,11 +209,19 @@ textarea {
   letter-spacing: 0.03em;
 }
 
-.loading {
+.loading,
+.loading-screen {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px;
+  min-height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  padding:
+    calc(var(--safe-top) + 48px)
+    calc(var(--safe-right) + 48px)
+    calc(var(--safe-bottom) + 48px)
+    calc(var(--safe-left) + 48px);
   color: var(--text-muted);
 }
 
@@ -223,8 +246,11 @@ textarea {
   align-items: flex-end;
   justify-content: center;
   z-index: 100;
-  padding: 16px;
-  padding-bottom: calc(16px + var(--safe-bottom));
+  padding:
+    calc(var(--safe-top) + var(--page-padding))
+    calc(var(--safe-right) + var(--page-padding))
+    calc(var(--safe-bottom) + var(--page-padding))
+    calc(var(--safe-left) + var(--page-padding));
 }
 
 @media (min-width: 640px) {
@@ -257,6 +283,8 @@ textarea {
   right: 0;
   height: calc(var(--nav-height) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
   background: var(--bg-card);
   border-top: 1px solid var(--border);
   display: flex;
@@ -462,11 +490,17 @@ textarea {
 
 .login-page {
   min-height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding:
+    calc(var(--safe-top) + 24px)
+    calc(var(--safe-right) + 24px)
+    calc(var(--safe-bottom) + 24px)
+    calc(var(--safe-left) + 24px);
   text-align: center;
 }
 

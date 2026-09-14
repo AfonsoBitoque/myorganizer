@@ -14,7 +14,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className="loading" style={{ height: '100vh' }}>
+      <div className="loading-screen">
         <div className="spinner" />
       </div>
     );
@@ -49,7 +49,7 @@ function LoginRoute() {
   const { user, loading } = useAuth();
   if (loading) {
     return (
-      <div className="loading" style={{ height: '100vh' }}>
+      <div className="loading-screen">
         <div className="spinner" />
       </div>
     );
