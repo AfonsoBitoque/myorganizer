@@ -7,6 +7,7 @@ PWA pessoal para organização do mestrado em Engenharia Informática — combin
 - **Projetos** — organiza UCs, trabalhos, dissertação, etc.
 - **Tarefas** — quadro Kanban (A fazer / Em progresso / Concluído) com prioridade e datas
 - **Notas** — bloco de notas com tags, pesquisa e fixação
+- **Estudo** — navega ficheiros do repo [EstudoMestrado](https://github.com/AfonsoBitoque/EstudoMestrado) e visualiza `.md`
 - **Dashboard** — visão geral do teu progresso
 - **PWA** — instalável no iPhone como app nativa
 - **Firebase** — dados sincronizados na cloud, acessíveis em qualquer dispositivo
@@ -58,7 +59,8 @@ Abre http://localhost:5173
    - `VITE_FIREBASE_MESSAGING_SENDER_ID`
    - `VITE_FIREBASE_APP_ID`
 5. Clica **Deploy**
-6. Depois do deploy, copia o URL (ex: `https://myorganizer.vercel.app`) e adiciona-o em **Firebase → Authentication → Authorized domains**
+6. (Opcional) Adiciona `GITHUB_TOKEN` nas env vars da Vercel para mais pedidos à API do GitHub
+7. Depois do deploy, copia o URL (ex: `https://myorganizer.vercel.app`) e adiciona-o em **Firebase → Authentication → Authorized domains**
 
 ## Instalar no iPhone
 

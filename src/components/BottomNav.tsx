@@ -5,6 +5,7 @@ const links = [
   { to: '/projects', icon: '📁', label: 'Projetos' },
   { to: '/tasks', icon: '📋', label: 'Tarefas' },
   { to: '/notes', icon: '📝', label: 'Notas' },
+  { to: '/study', icon: '📚', label: 'Estudo' },
 ];
 
 export function BottomNav() {
