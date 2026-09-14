@@ -8,17 +8,16 @@ import {
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   signOut,
   type User,
 } from 'firebase/auth';
 import { auth } from '@/firebase';
+import { getAllowedEmail, isAllowedEmail } from '@/lib/firebaseConfig';
 
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -33,20 +32,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
       return;
     }
-    return onAuthStateChanged(auth, (u) => {
-      setUser(u);
+    const firebaseAuth = auth;
+    return onAuthStateChanged(firebaseAuth, async (u) => {
+      if (u && !isAllowedEmail(u.email ?? '')) {
+        await signOut(firebaseAuth);
+        setUser(null);
+      } else {
+        setUser(u);
+      }
       setLoading(false);
     });
   }, []);
 
   const login = async (email: string, password: string) => {
     if (!auth) throw new Error('Firebase não configurado');
+    if (!isAllowedEmail(email)) {
+      throw new Error('auth/unauthorized-email');
+    }
     await signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const register = async (email: string, password: string) => {
-    if (!auth) throw new Error('Firebase não configurado');
-    await createUserWithEmailAndPassword(auth, email, password);
   };
 
   const logout = async () => {
@@ -55,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -66,3 +69,5 @@ export function useAuth() {
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');
   return ctx;
 }
+
+export { getAllowedEmail };

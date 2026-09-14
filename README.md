@@ -27,8 +27,13 @@ PWA pessoal para organização do mestrado em Engenharia Informática — combin
    ```bash
    cp .env.example .env
    # Cola as credenciais da app Web Firebase
+   # Define VITE_ALLOWED_EMAIL com o teu email (único utilizador)
    ```
-7. Em **Authentication → Settings → Authorized domains**, adiciona o domínio da Vercel (ex: `myorganizer.vercel.app`)
+7. Cria a tua conta (só uma vez):
+   ```bash
+   SETUP_PASSWORD=a_tua_password npm run create-account
+   ```
+8. Em **Authentication → Settings → Authorized domains**, adiciona o domínio da Vercel (ex: `myorganizer.vercel.app`)
 
 ## Desenvolvimento local
 

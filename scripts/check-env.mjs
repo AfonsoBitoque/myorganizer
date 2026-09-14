@@ -28,6 +28,7 @@ const required = [
   'VITE_FIREBASE_STORAGE_BUCKET',
   'VITE_FIREBASE_MESSAGING_SENDER_ID',
   'VITE_FIREBASE_APP_ID',
+  'VITE_ALLOWED_EMAIL',
 ];
 
 let ok = true;
@@ -64,9 +65,18 @@ if (projectId && authDomain && !authDomain.startsWith(`${projectId}.`)) {
   ok = false;
 }
 
+const allowedEmail = vars.VITE_ALLOWED_EMAIL ?? '';
+if (allowedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(allowedEmail)) {
+  console.error('❌ VITE_ALLOWED_EMAIL não parece um email válido');
+  ok = false;
+}
+
 if (!ok) {
   console.error('\nCorrige o .env e reinicia: npm run dev');
   process.exit(1);
 }
 
-console.log('\n✅ .env parece correto. Se a app ainda falhar, reinicia o servidor (Ctrl+C → npm run dev).');
+console.log('\n✅ .env parece correto.');
+console.log(`   Login restrito a: ${allowedEmail}`);
+console.log('   Cria a conta (só uma vez): SETUP_PASSWORD=xxx npm run create-account');
+console.log('   Depois reinicia: npm run dev');

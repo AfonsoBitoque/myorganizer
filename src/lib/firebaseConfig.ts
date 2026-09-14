@@ -58,3 +58,14 @@ export function getFirebaseConfig() {
 export function isFirebaseConfigured(): boolean {
   return getFirebaseConfigErrors().length === 0;
 }
+
+export function getAllowedEmail(): string {
+  const value = import.meta.env.VITE_ALLOWED_EMAIL;
+  return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
+export function isAllowedEmail(email: string): boolean {
+  const allowed = getAllowedEmail();
+  if (!allowed) return true;
+  return email.trim().toLowerCase() === allowed;
+}
