@@ -84,11 +84,12 @@ export function useAulas(cadeiraId?: string) {
     const q = query(
       userCollection(user.uid, 'aulas'),
       where('cadeiraId', '==', cadeiraId),
-      orderBy('number', 'asc'),
     );
 
     return onSnapshot(q, (snap) => {
-      setAulas(snap.docs.map((d) => mapDoc<Aula>(d.id, d.data())));
+      const list = snap.docs.map((d) => mapDoc<Aula>(d.id, d.data()));
+      list.sort((a, b) => a.number - b.number);
+      setAulas(list);
       setLoading(false);
     });
   }, [user, cadeiraId]);

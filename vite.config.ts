@@ -45,16 +45,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/firestore\.googleapis\.com\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'firestore-cache',
-              expiration: { maxEntries: 50, maxAgeSeconds: 86400 },
-            },
-          },
-        ],
+        // Não cachear Firestore — os canais realtime/long-polling falham com SW
+        navigateFallbackDenylist: [/^\/api\//],
       },
     }),
   ],
