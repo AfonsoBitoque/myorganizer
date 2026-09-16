@@ -32,6 +32,26 @@ export interface Note {
   updatedAt: number;
 }
 
+export interface Cadeira {
+  id: string;
+  name: string;
+  description: string;
+  color: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface Aula {
+  id: string;
+  cadeiraId: string;
+  title: string;
+  number: number;
+  date: number | null;
+  content: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
 export const TASK_STATUSES: { value: TaskStatus; label: string }[] = [
   { value: 'todo', label: 'A fazer' },
   { value: 'in_progress', label: 'Em progresso' },

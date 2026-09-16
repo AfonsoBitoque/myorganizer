@@ -753,3 +753,142 @@ textarea {
   border-top: 1px solid var(--border);
   margin: 1.5em 0;
 }
+
+/* Rich text editor (apontamentos) */
+.apontamentos-editor-page {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(var(--safe-bottom) + var(--page-padding));
+  min-height: 100dvh;
+}
+
+.apontamentos-editor-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.apontamentos-editor-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.apontamentos-title-input {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.apontamentos-title-input:focus {
+  border-bottom: 1px solid var(--primary);
+}
+
+.apontamentos-save-status {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.rich-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.editor-toolbar-btn {
+  min-width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  background: transparent;
+  transition: all 0.15s;
+}
+
+.editor-toolbar-btn:hover,
+.editor-toolbar-btn.active {
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+
+.editor-toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  margin: 6px 4px;
+  align-self: center;
+}
+
+.rich-editor-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 50vh;
+}
+
+.rich-editor-body .tiptap {
+  padding: 16px 18px 32px;
+  min-height: 50vh;
+  outline: none;
+}
+
+.rich-editor-body .tiptap p.is-editor-empty:first-child::before {
+  color: var(--text-muted);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.rich-editor-prose {
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.rich-editor-prose h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1em 0 0.5em;
+}
+
+.rich-editor-prose p {
+  margin: 0.5em 0;
+}
+
+.rich-editor-prose ul,
+.rich-editor-prose ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.rich-editor-prose blockquote {
+  border-left: 3px solid var(--primary);
+  padding-left: 1em;
+  color: var(--text-muted);
+  margin: 0.8em 0;
+}
+
+.rich-editor-prose strong {
+  font-weight: 700;
+}

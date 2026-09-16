@@ -4,6 +4,7 @@ const links = [
   { to: '/', icon: '🏠', label: 'Início' },
   { to: '/projects', icon: '📁', label: 'Projetos' },
   { to: '/tasks', icon: '📋', label: 'Tarefas' },
+  { to: '/apontamentos', icon: '✏️', label: 'Apont.' },
   { to: '/notes', icon: '📝', label: 'Notas' },
   { to: '/study', icon: '📚', label: 'Estudo' },
 ];

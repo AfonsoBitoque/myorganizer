@@ -9,6 +9,7 @@ import { Projects } from '@/pages/Projects';
 import { Tasks } from '@/pages/Tasks';
 import { Notes } from '@/pages/Notes';
 import { Study } from '@/pages/Study';
+import { Apontamentos } from '@/pages/Apontamentos';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -41,6 +42,9 @@ function AppRoutes() {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/notes" element={<Notes />} />
         <Route path="/study/*" element={<Study />} />
+        <Route path="/apontamentos" element={<Apontamentos />} />
+        <Route path="/apontamentos/:cadeiraId" element={<Apontamentos />} />
+        <Route path="/apontamentos/:cadeiraId/:aulaId" element={<Apontamentos />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
