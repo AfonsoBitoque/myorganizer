@@ -97,7 +97,12 @@ export function useAulas(cadeiraId?: string) {
   const addAula = async (data: Omit<Aula, 'id' | 'createdAt' | 'updatedAt'>): Promise<string | undefined> => {
     if (!user) return;
     const now = Date.now();
-    const ref = await addDoc(userCollection(user.uid, 'aulas'), { ...data, createdAt: now, updatedAt: now });
+    const ref = await addDoc(userCollection(user.uid, 'aulas'), {
+      ...data,
+      drawing: data.drawing ?? [],
+      createdAt: now,
+      updatedAt: now,
+    });
     return ref.id;
   };
 

@@ -1,3 +1,5 @@
+import type { DrawStroke } from '@/types/drawing';
+
 export type TaskStatus = 'todo' | 'in_progress' | 'done';
 export type TaskPriority = 'low' | 'medium' | 'high';
 
@@ -48,6 +50,7 @@ export interface Aula {
   number: number;
   date: number | null;
   content: string;
+  drawing: DrawStroke[];
   createdAt: number;
   updatedAt: number;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MarkdownViewer } from '@/components/MarkdownViewer';
+import { StudyViewer } from '@/pages/StudyViewer';
 import {
   getFileContent,
   getFileIcon,
@@ -88,23 +88,12 @@ export function Study() {
 
   if (viewing) {
     return (
-      <div className="page study-page">
-        <div className="study-toolbar">
-          <button className="btn btn-ghost btn-sm" onClick={() => setViewing(null)}>
-            ← Voltar
-          </button>
-          <span className="study-file-name">{viewing.path.split('/').pop()}</span>
-          <a
-            className="btn btn-ghost btn-sm"
-            href={`https://github.com/AfonsoBitoque/EstudoMestrado/blob/${branch}/${viewing.path}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-        </div>
-        <MarkdownViewer content={viewing.content} filePath={viewing.path} branch={branch} />
-      </div>
+      <StudyViewer
+        path={viewing.path}
+        content={viewing.content}
+        branch={branch}
+        onBack={() => setViewing(null)}
+      />
     );
   }
 

@@ -892,3 +892,189 @@ textarea {
 .rich-editor-prose strong {
   font-weight: 700;
 }
+
+/* Drawing / caneta nos resumos */
+.drawing-canvas-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.drawing-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.drawing-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.drawing-color-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.drawing-color-btn.active {
+  border-color: white;
+  transform: scale(1.1);
+}
+
+.drawing-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.drawing-width-btn,
+.drawing-tool-btn {
+  min-width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.drawing-width-btn.active,
+.drawing-tool-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+.drawing-width-dot {
+  display: block;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.drawing-canvas-container {
+  position: relative;
+  width: 100%;
+  touch-action: none;
+}
+
+.drawing-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.summary-annotate {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-annotate-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.summary-annotate-inner {
+  position: relative;
+}
+
+.summary-annotate.draw-active .markdown-body {
+  user-select: none;
+}
+
+.summary-canvas-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  touch-action: none;
+}
+
+.summary-canvas-overlay .drawing-canvas-wrap {
+  height: 100%;
+}
+
+.summary-canvas-overlay .drawing-canvas-container {
+  height: 100%;
+}
+
+.html-resumo-body {
+  padding: 16px 18px 32px;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.html-resumo-body h1,
+.html-resumo-body h2,
+.html-resumo-body h3 {
+  margin: 1em 0 0.5em;
+  font-weight: 700;
+}
+
+.study-viewer-page {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(var(--safe-bottom) + var(--page-padding));
+}
+
+.study-mode-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.study-mode-tab {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.study-mode-tab.active {
+  background: var(--primary);
+  color: white;
+}
+
+.apontamentos-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.apontamentos-tab {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.apontamentos-tab.active {
+  background: var(--primary);
+  color: white;
+}

@@ -1,19 +1,23 @@
 import { useCallback, useEffect, useRef, useState, FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RichTextEditor } from '@/components/RichTextEditor';
+import { DrawingToolbar } from '@/components/DrawingCanvas';
+import { HtmlAnnotator } from '@/components/HtmlAnnotator';
 import { Modal } from '@/components/Modal';
 import { useCadeiras, useAulas } from '@/hooks/useApontamentos';
 import { PROJECT_COLORS } from '@/types';
+import type { DrawStroke } from '@/types/drawing';
+import { PEN_COLORS, PEN_WIDTHS } from '@/types/drawing';
 
-function useDebouncedSave(fn: (content: string) => void, delay: number) {
+function useDebouncedSave<T>(fn: (value: T) => void, delay: number) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const fnRef = useRef(fn);
   fnRef.current = fn;
 
   return useCallback(
-    (content: string) => {
+    (value: T) => {
       clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => fnRef.current(content), delay);
+      timeoutRef.current = setTimeout(() => fnRef.current(value), delay);
     },
     [delay],
   );
@@ -33,14 +37,26 @@ export function Apontamentos() {
   const [aulaTitle, setAulaTitle] = useState('');
   const [aulaDate, setAulaDate] = useState('');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [editorTab, setEditorTab] = useState<'texto' | 'caneta'>('texto');
+  const [penColor, setPenColor] = useState(PEN_COLORS[1]);
+  const [penWidth, setPenWidth] = useState(PEN_WIDTHS[1]);
+  const [isEraser, setIsEraser] = useState(false);
+  const [localDrawing, setLocalDrawing] = useState<DrawStroke[]>([]);
 
   const cadeira = cadeiras.find((c) => c.id === cadeiraId);
   const aula = aulas.find((a) => a.id === aulaId);
 
-  const debouncedSave = useDebouncedSave((content: string) => {
+  const debouncedSaveContent = useDebouncedSave((content: string) => {
     if (!aulaId) return;
-    setSaveStatus('saving');
     updateAula(aulaId, { content }).then(() => {
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus('idle'), 2000);
+    });
+  }, 1200);
+
+  const debouncedSaveDrawing = useDebouncedSave((drawing: DrawStroke[]) => {
+    if (!aulaId) return;
+    updateAula(aulaId, { drawing }).then(() => {
       setSaveStatus('saved');
       setTimeout(() => setSaveStatus('idle'), 2000);
     });
@@ -48,7 +64,12 @@ export function Apontamentos() {
 
   useEffect(() => {
     setSaveStatus('idle');
+    setEditorTab('texto');
   }, [aulaId]);
+
+  useEffect(() => {
+    setLocalDrawing(aula?.drawing ?? []);
+  }, [aula?.id, aula?.drawing]);
 
   const handleCreateCadeira = async (e: FormEvent) => {
     e.preventDefault();
@@ -69,6 +90,7 @@ export function Apontamentos() {
       number: nextNumber,
       date: aulaDate ? new Date(aulaDate).getTime() : null,
       content: '<p></p>',
+      drawing: [],
     });
     setAulaTitle('');
     setAulaDate('');
@@ -130,14 +152,69 @@ export function Apontamentos() {
           </button>
         </div>
 
-        <RichTextEditor
-          key={aula.id}
-          content={aula.content || '<p></p>'}
-          onChange={(html) => {
-            setSaveStatus('saving');
-            debouncedSave(html);
-          }}
-        />
+        <div className="apontamentos-tabs">
+          <button
+            type="button"
+            className={`apontamentos-tab${editorTab === 'texto' ? ' active' : ''}`}
+            onClick={() => setEditorTab('texto')}
+          >
+            Texto
+          </button>
+          <button
+            type="button"
+            className={`apontamentos-tab${editorTab === 'caneta' ? ' active' : ''}`}
+            onClick={() => setEditorTab('caneta')}
+          >
+            ✏️ Caneta
+          </button>
+        </div>
+
+        {editorTab === 'caneta' && (
+          <DrawingToolbar
+            color={penColor}
+            width={penWidth}
+            isEraser={isEraser}
+            onColorChange={setPenColor}
+            onWidthChange={setPenWidth}
+            onEraserChange={setIsEraser}
+            onUndo={() => {
+              const next = localDrawing.slice(0, -1);
+              setLocalDrawing(next);
+              setSaveStatus('saving');
+              debouncedSaveDrawing(next);
+            }}
+            onClear={() => {
+              if (localDrawing.length === 0 || !confirm('Apagar todo o desenho?')) return;
+              setLocalDrawing([]);
+              setSaveStatus('saving');
+              debouncedSaveDrawing([]);
+            }}
+          />
+        )}
+
+        {editorTab === 'texto' ? (
+          <RichTextEditor
+            key={aula.id}
+            content={aula.content || '<p></p>'}
+            onChange={(html) => {
+              setSaveStatus('saving');
+              debouncedSaveContent(html);
+            }}
+          />
+        ) : (
+          <HtmlAnnotator
+            html={aula.content || '<p></p>'}
+            strokes={localDrawing}
+            onStrokesChange={(strokes) => {
+              setLocalDrawing(strokes);
+              setSaveStatus('saving');
+              debouncedSaveDrawing(strokes);
+            }}
+            penColor={penColor}
+            penWidth={penWidth}
+            isEraser={isEraser}
+          />
+        )}
       </div>
     );
   }
