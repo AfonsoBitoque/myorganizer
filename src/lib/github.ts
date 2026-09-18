@@ -7,8 +7,14 @@ async function githubFetch<T>(params: Record<string, string>): Promise<T> {
   const res = await fetch(`${API}?${query}`);
   const data = await res.json();
   if (!res.ok) {
-    const message = data.message || `Erro GitHub (${res.status})`;
-    throw new Error(message);
+    const raw = data.message || `Erro GitHub (${res.status})`;
+    if (/rate limit/i.test(raw)) {
+      throw new Error(
+        'Limite da API GitHub atingido. Adiciona GITHUB_TOKEN ao .env (local) ou à Vercel e reinicia. ' +
+          'Vê: https://github.com/settings/tokens (scope: public_repo)',
+      );
+    }
+    throw new Error(raw);
   }
   return data as T;
 }
@@ -25,10 +31,14 @@ export async function listContents(path = ''): Promise<GitHubContentItem[]> {
   return Array.isArray(data) ? data : [data];
 }
 
-export async function getFileContent(path: string): Promise<{ content: string; item: GitHubContentItem }> {
+export async function getFileContent(
+  path: string,
+  branch = 'main',
+): Promise<{ content: string; item: GitHubContentItem }> {
   const data = await githubFetch<GitHubContentItem & { decodedContent?: string }>({
     action: 'file',
     path,
+    branch,
   });
   const content = data.decodedContent ?? '';
   return { content, item: data };

@@ -12,7 +12,8 @@ export default async function handler(req, res) {
     }
 
     if (action === 'file') {
-      const { status, data } = await fetchFileContent(path, token);
+      const branch = typeof req.query.branch === 'string' ? req.query.branch : 'main';
+      const { status, data } = await fetchFileContent(path, token, branch);
       return res.status(status).json(data);
     }
 

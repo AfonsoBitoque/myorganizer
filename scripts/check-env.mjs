@@ -76,6 +76,15 @@ if (!ok) {
   process.exit(1);
 }
 
+const githubToken = vars.GITHUB_TOKEN ?? '';
+if (!githubToken) {
+  console.log('\n⚠️  GITHUB_TOKEN não definido — a secção Estudo pode dar "rate limit exceeded"');
+  console.log('   Cria token em: https://github.com/settings/tokens (public_repo)');
+  console.log('   Adiciona ao .env: GITHUB_TOKEN=ghp_...');
+} else {
+  console.log(`✅ GITHUB_TOKEN = ${githubToken.slice(0, 8)}...`);
+}
+
 console.log('\n✅ .env parece correto.');
 console.log(`   Login restrito a: ${allowedEmail}`);
 console.log('   Cria a conta (só uma vez): SETUP_PASSWORD=xxx npm run create-account');

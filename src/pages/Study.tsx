@@ -71,7 +71,7 @@ export function Study() {
     if (isMarkdownFile(item.name)) {
       setLoadingFile(true);
       try {
-        const { content } = await getFileContent(item.path);
+        const { content } = await getFileContent(item.path, branch);
         setViewing({ path: item.path, content });
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro ao abrir ficheiro');
